@@ -172,13 +172,16 @@ int sSendFile(){
             strcpy(content_type, "text/html");
             break;
     }
-    char head[1024];
-    snprintf(head, sizeof(head), "HTTP/1.0 200 OK\n"
+    if(file_size < 0) file_size = 0;
+    size_t dynamic_size = 200 + file_size;
+    char* head = (char*)malloc(dynamic_size);
+    snprintf(head, dynamic_size, "HTTP/1.0 200 OK\n"
                              "Server: CServer\n"
                              "Content-Length: %d\n"
                              "Content-Type: %s; charset=UTF-8\n\n%s",
                              file_size, content_type, body);
-    size_t req_size = strlen(head) + 1;
+    size_t req_size = strlen(head) + 3;
+    realloc(head, req_size + 1);
     printf("req-sz: %d", (int)req_size);
     printf(" --- Req:\n%s\n", head);
     char* req = (char*)malloc(req_size);
@@ -187,6 +190,7 @@ int sSendFile(){
 
     // Finally send response
     free(body);
+    free(head);
     int n = send(pserver->client, req, req_size, 0);
     free(req);
     printf("Server: sent %d bytes.\n", n);

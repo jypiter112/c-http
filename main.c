@@ -10,7 +10,7 @@ int sHandleRequest();
 */
 
 int sHandleRequest(){
-    if(strlen(pserver->request) > 0) {
+    if(strlen(pserver->request) > 4) {
         // Get GET
         char get[4];
         memcpy(get, pserver->request, 3);
