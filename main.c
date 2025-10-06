@@ -8,7 +8,6 @@ int sHandleRequest();
     http 1.0
     path escape possible and no path validation
 */
-
 int sHandleRequest(){
     if(strlen(pserver->request) > 4) {
         // Get GET
@@ -24,7 +23,6 @@ int sHandleRequest(){
     }
     return 0;
 }
-
 int main(void){
     sMakeServer();
     sBindServer(8080);
